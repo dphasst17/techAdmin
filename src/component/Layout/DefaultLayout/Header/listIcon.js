@@ -1,49 +1,49 @@
-import { BiUserPin,BiCommentDots } from "react-icons/bi";
+import { BiUserPin, BiCommentDots } from "react-icons/bi";
 import { FaWarehouse } from "react-icons/fa";
 import { RiDashboardLine } from "react-icons/ri";
-import { BsBag,BsBarChartLine } from "react-icons/bs";
+import { BsBag, BsBarChartLine } from "react-icons/bs";
 import { MdOutlineLocalShipping } from "react-icons/md";
-import {MdEditNote} from "react-icons/md"
+import { MdEditNote } from "react-icons/md";
 const listNameIcons = [
   {
-    'url': RiDashboardLine,
+    url: RiDashboardLine,
     name: "Dashboard",
     link: "/",
   },
   {
-    'url': BsBag,
+    url: BsBag,
     name: "Product",
     link: "/product",
   },
   {
-    'url': BiUserPin,
+    url: BiUserPin,
     name: "User/Staff",
     link: "/user",
   },
   {
-    'url': BiCommentDots,
+    url: BiCommentDots,
     name: "Comment",
     link: "/comment",
   },
   {
-    'url': MdEditNote,
-    name:"Posts",
-    link:"/posts"
+    url: MdEditNote,
+    name: "Posts",
+    link: "/posts",
   },
   {
-    'url': MdOutlineLocalShipping,
+    url: MdOutlineLocalShipping,
     name: "Order",
     link: "/order",
   },
   {
-    'url':FaWarehouse,
-    name:"Warehouse",
-    link:"/ware"
+    url: FaWarehouse,
+    name: "Warehouse",
+    link: "/ware",
   },
   {
-    'url': BsBarChartLine,
+    url: BsBarChartLine,
     name: "Statistical",
     link: "/statistical",
-  }
+  },
 ];
-export default listNameIcons
+export default listNameIcons;

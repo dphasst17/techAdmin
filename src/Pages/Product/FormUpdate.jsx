@@ -9,7 +9,7 @@ import { useGetDataByKey } from "~/hooks/useSelectData";
 import { productUpdate } from "~/api/product";
 export const FormUpdate = ({ props }) => {
     const { data, err: errResult } = useGetDataByKey('product', 'getProductDetail', props.dataUpdate)
-    const { stateForm, setStateForm } = useContext(StateContext); 
+    const { stateForm, setStateForm } = useContext(StateContext);
     const [fileName, setFileName] = useState("");
     const { register: registerProduct, watch: watchForm1, handleSubmit: handleSubmitProduct, formState: { errors: err } } = useForm();
     const watchAllForm1 = watchForm1();
@@ -40,9 +40,9 @@ export const FormUpdate = ({ props }) => {
                 newProduct[2] = newImgUrl;
                 let newStateForm = { ...stateForm, product: newProduct };
                 //Post Data Update Product is here
-                productUpdate(newStateForm,props.dataUpdate)
-                .then(res => {res.message === "Update to success" && window.location.reload()})
-                .catch(err => alert(err.message ))
+                productUpdate(newStateForm, props.dataUpdate)
+                    .then(res => { res.message === "Update to success" && window.location.reload() })
+                    .catch(err => alert(err.message))
             }
         }
         FetchDataUpdate()

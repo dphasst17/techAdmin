@@ -1,6 +1,6 @@
 import "~/styles/Loading.scss";
 const LoadingUi = () => {
-    return <div id="preloader">
+  return <div id="preloader">
     <div id="loader"></div>
   </div>
 }

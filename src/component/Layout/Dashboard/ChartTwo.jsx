@@ -77,7 +77,7 @@ const ChartTwo = ({props}) => {
     ],
   });
   return (
-    <div className={`d-Chart w-full md:w-2/4 xl:w-[30%] col-span-12 rounded-[10px] border border-stroke ${props.dark === true ? 'bg-slate-500' : 'bg-slate-100'} p-7.5 shadow-default xl:col-span-4`}>
+    <div className={`d-Chart w-full md:w-2/4 xl:w-[30%] max-h-[360px] xl:max-h-[500px] my-2 col-span-12 rounded-[10px] border border-stroke ${props.dark === true ? 'bg-slate-500' : 'bg-slate-100'} p-7.5 shadow-default xl:col-span-4`}>
       <div className="mb-4 justify-around gap-4 sm:flex">
         <div>
           <h4 className={`text-xl font-semibold ${props.dark === true ? 'text-white' :'text-dark'} my-2`}>
@@ -119,12 +119,12 @@ const ChartTwo = ({props}) => {
       </div>
   
       <div>
-        <div id="chartTwo" className={` -mb-9 p-2 ${props.dark === true ? 'bg-slate-400' : 'bg-slate-100'}`}>
+        <div id="chartTwo" className={` mb-9 p-2 ${props.dark === true ? 'bg-slate-400' : 'bg-slate-100'}`}>
           <ReactApexChart
             options={options}
             series={state.series}
             type="bar"
-            height={350}
+            height={290}
           />
         </div>
       </div>

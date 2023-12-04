@@ -1,5 +1,5 @@
 const sanitizeString = (str) => {
-    const unwantedChars = /[&\/\\#,+()$~%'"*?<>{}^!-]/g;
+    const unwantedChars = /[&\/\\#,+()$~%*?<>{}^!-]/g;
     return str.replace(unwantedChars, '');
 }
 

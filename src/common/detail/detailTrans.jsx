@@ -12,9 +12,9 @@ const DetailTrans = ({ props }) => {
     const handleChangeStatus = (idTrans, newValue) => {
         console.log(idTrans)
         console.log(newValue)
-        transUpdateStatus(idTrans,newValue)
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
+        transUpdateStatus(idTrans, newValue)
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
     }
     useEffect(() => {
         data !== null && setValueBtn(Array.from(new Set(data.flatMap(e => e.detail.flatMap(d => d.status)))))
@@ -38,7 +38,7 @@ const DetailTrans = ({ props }) => {
             <div className="btnOrder w-full h-auto flex justify-center items-center">
                 {valueBtn.length !== 0 &&
                     Array.from(new Set(valueBtn.flatMap(e =>
-                        nextValues.filter(n => e.includes(n.currentValue)).map(n => <button onClick={() => {handleChangeStatus(props.id,n.nextValue)}} className={`w-[200px] h-[50px] flex justify-center items-center bg-blue-500 font-semibold rounded-[5px] mx-2 
+                        nextValues.filter(n => e.includes(n.currentValue)).map(n => <button onClick={() => { handleChangeStatus(props.id, n.nextValue) }} className={`w-[200px] h-[50px] flex justify-center items-center bg-blue-500 font-semibold rounded-[5px] mx-2 
                             text-white ${(n.nextValue === "Thất bại" || n.nextValue === "Hủy") && 'bg-red-500'}`}>{n.nextValue}</button>)
                     )))
                 }

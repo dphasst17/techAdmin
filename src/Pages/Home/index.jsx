@@ -12,7 +12,7 @@ import { useContext } from 'react';
 import { StateContext } from '~/context/stateContext';
 
 const Home = () => {
-  const {dark} = useContext(StateContext)
+  const { dark } = useContext(StateContext)
   return (
     <div className="h-pages w-full h-auto pt-2 px-10 flex flex-col justify-around items-center">
       <div className="w-full min-h-[10%] flex flex-col lg:flex-row justify-around items-center rounded-[10px] bg-slate-500">
@@ -26,10 +26,10 @@ const Home = () => {
         <CardFour />
       </div>
       <div className="w-full h-auto flex flex-wrap justify-between">
-        <ChartOne props={{dark}} />
-        <ChartTwo props={{dark}} />
-        <ChartThree props={{dark}} />
-        <TableOne props={{dark}} />
+        <ChartOne props={{ dark }} />
+        <ChartTwo props={{ dark }} />
+        <ChartThree props={{ dark }} />
+        <TableOne props={{ dark }} />
       </div>
       <div className="w-full h-[50px]"></div>
     </div>

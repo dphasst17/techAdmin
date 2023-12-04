@@ -51,22 +51,22 @@ const RevenueMonth = () => {
     return <div className="revenue-month w-3/5 min-w-[300px] h-auto flex flex-col justify-center items-center bg-slate-300 rounded-lg mx-auto my-20">
         <h2 className={`text-slate-500 text-center text-[20px] font-semibold`}>Revenue collected by month</h2>
         <Bar
-    data={chartData}
-    options={{
-        plugins: {
-            title: {
-                display: true,
-                color: "white",
-                text: "",
-            },
-            legend: {
-                labels: {
-                    color: 'gray',
-                }
-            }
-        },
-    }}
-/>
+            data={chartData}
+            options={{
+                plugins: {
+                    title: {
+                        display: true,
+                        color: "white",
+                        text: "",
+                    },
+                    legend: {
+                        labels: {
+                            color: 'gray',
+                        }
+                    }
+                },
+            }}
+        />
 
     </div>
 }

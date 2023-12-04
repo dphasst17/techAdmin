@@ -2,8 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { StateContext } from "~/context/stateContext";
 
 const PaginationPage = (quantity, itemsInPage) => {
-    const [numberPage,setNumberPage] = useState()
-    const {setIsShowPaging} = useContext(StateContext)
+    const [numberPage, setNumberPage] = useState()
+    const { setIsShowPaging } = useContext(StateContext)
     useEffect(() => {
         if (quantity > itemsInPage) {
             let length = quantity % itemsInPage === 0 ? quantity / itemsInPage : quantity / itemsInPage + 1;
@@ -18,6 +18,6 @@ const PaginationPage = (quantity, itemsInPage) => {
             setIsShowPaging(false);
         }
     }, [quantity, itemsInPage]);
-    return {numberPage}
+    return { numberPage }
 };
 export default PaginationPage;

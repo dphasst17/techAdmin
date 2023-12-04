@@ -27,9 +27,9 @@ const ShortKey = () => {
             <span className="w-full text-white font-semibold my-2">Ctrl + B : Font Bold</span>
             <span className="w-full text-white font-semibold my-2">Ctrl + I : Italics</span>
             <span className="w-full text-white font-semibold my-2">Ctrl + U : Underline</span>
-    
+
             {/* <span className="w-full text-white font-semibold my-2">Ctrl +Alt + I : Image folder</span> */}
-    
+
             <span className="w-full text-white font-semibold my-2">Ctrl +Alt + L : Code block</span>
         </div>
     </div>

@@ -13,7 +13,7 @@ export const FormAddNew = ({ props }) => {
     const [selectValue, setSelectValue] = useState();
     const [getName, setGetName] = useState(null);
     const [fileName, setFileName] = useState("");
-    const [file,setFile] = useState("")
+    const [file, setFile] = useState("")
     const typeNames = {
         '1': 'LAPTOP',
         '2': 'KEYBOARD',
@@ -50,16 +50,16 @@ export const FormAddNew = ({ props }) => {
                 let newStateForm = { ...stateForm, product: newProduct };
                 //Post Data Insert Product is here
                 const newFile = new FormData
-                newFile.append('file',file)
+                newFile.append('file', file)
                 uploadImageProductToS3(newFile)
-                .then(res => console.log(res))
-                .catch(err => console.log(err))
-                
+                    .then(res => console.log(res))
+                    .catch(err => console.log(err))
+
                 console.log(file);
 
                 postProductInsert(newStateForm)
-                .then(res => console.log(res))
-                .catch(err => console.log(err))
+                    .then(res => console.log(res))
+                    .catch(err => console.log(err))
 
             }
         }

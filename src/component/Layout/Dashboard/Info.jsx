@@ -3,7 +3,6 @@ import { FcSearch } from "react-icons/fc";
 import { AiFillFacebook,AiFillGithub } from "react-icons/ai";
 import { StateContext } from "~/context/stateContext";
 import { useGetLocalStorage, useSetLocalStorage } from "~/hooks/useLocalStorage.jsx";
-import profile from "~/image/profile.png"
 const InfoUser = () => {
     const [title,setTitle] = useState('Dark Mode');
     const {dark,setDark,userDetail} = useContext(StateContext);
@@ -26,7 +25,7 @@ const InfoUser = () => {
         <div className="w-full md:w-[35%] h-2/5 md:h-full flex md:justify-around items-center px-2">
             <div className="imgUser md:w-[50px] h-[35px] sm:h-[40px] md:h-[50px] flex items-center">
                 <img className="w-[40px] md:w-[100px] h-[40px] object-contain border-solid border-[#3b82f6] border-[2px] rounded-full" src={
-                    data.img?.length !== 0 ? data.img : 'https://i.pinimg.com/736x/e2/68/bf/e268bfe1ef2a13e8487393ea661ecf73.jpg'
+                    data.img?.length !== 0 ? data?.img : 'https://i.pinimg.com/736x/e2/68/bf/e268bfe1ef2a13e8487393ea661ecf73.jpg'
                 } alt="avatar User"/>
             </div>
             <div className="infoDetail w-full lg:min-w-[90px] h-full pl-[2%] flex flex-wrap justify-start items-center">

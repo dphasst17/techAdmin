@@ -4,52 +4,52 @@ import { uploadImageProductToS3, uploadImageProductToSV } from "~/api/product";
 import closeIcon from "~/image/close.png";
 import fileUpload from "~/image/fileUpload.png";
 import nextSubmit from "~/image/nextSubmit.png";
-const AddImg = ({props}) => {
+const AddImg = ({ props }) => {
     const { register, handleSubmit, formState: { errors: err } } = useForm();
     const [fileName, setFileName] = useState("");
-    const [files,setFile] = useState("");
-    const [id,setId]= useState("")
-    const [uploadImg,setUploadImg] = useState(null)
+    const [files, setFile] = useState("");
+    const [id, setId] = useState("")
+    const [uploadImg, setUploadImg] = useState(null)
     const handleChange = (event) => {
         const file = event.target.files;
-        for(let i = 0 ;i< file.length;i++){
+        for (let i of file) {
             setFile(prevFiles => [...prevFiles, file[i]]);
             setFileName(prevFileNames => [...prevFileNames, file[i].name]);
         }
     };
     const onSubmit = (data) => {
-        fileName!=="" && setUploadImg({file:fileName})
-        fileName === "" && data.urlImage !== "" && setUploadImg({urlImage:data.urlImage.split(",")})
+        fileName !== "" && setUploadImg({ file: fileName })
+        fileName === "" && data.urlImage !== "" && setUploadImg({ urlImage: data.urlImage.split(",") })
         fileName === "" && data.urlImage === "" && alert("Please enter the image path or choose to upload from folder")
     }
     const handleSelectChange = (e) => {
         setId(e.target.value)
     }
     useEffect(() => {
-        if(uploadImg !== null && id !== ""){
-            if(files !== ""){
+        if (uploadImg !== null && id !== "") {
+            if (files !== "") {
                 const data = new FormData();
-                for(let i = 0; i < files.length; i++){
-                    data.append(`file${[i]}:`,files[i])
+                for (let i = 0; i < files.length; i++) {
+                    data.append(`file${[i]}:`, files[i])
                 }
                 uploadImageProductToS3(data)
-                .then(res => console.log(res))
-                .catch(err => console.log(err))    
+                    .then(res => console.log(res))
+                    .catch(err => console.log(err))
             }
-            uploadImageProductToSV(id,uploadImg)
+            uploadImageProductToSV(id, uploadImg)
                 .then(res => {
-                    if(res.status === 201) {
+                    if (res.status === 201) {
                         alert(res.message)
                         window.location.reload()
                     }
                 })
                 .catch(err => console.log(err))
         }
-    },[uploadImg,id])
+    }, [uploadImg, id])
 
     return <div className="formProduct w-screen h-screen flex items-center justify-center fixed z-50 top-0">
-        <div onClick={() => { props.setAddImg(false)}} className="formProduct-overlay w-full h-full absolute opacity-60 bg-black z-20"></div>
-        <div onClick={() => { props.setAddImg(false)}} className="closeBtn absolute w-[60px] h-[50px]
+        <div onClick={() => { props.setAddImg(false) }} className="formProduct-overlay w-full h-full absolute opacity-60 bg-black z-20"></div>
+        <div onClick={() => { props.setAddImg(false) }} className="closeBtn absolute w-[60px] h-[50px]
              cursor-pointer flex items-center justify-center top-5 left-2 z-50">
             <img src={closeIcon} className="w-full h-full object-contain" alt="close-icon" />
         </div>
@@ -75,10 +75,10 @@ const AddImg = ({props}) => {
                                     <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
                                     <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
                                 </div>
-                                <input id="dropzone-file" type="file" className="hidden" {...register("file", { required: false })} onChange={handleChange} multiple/>
+                                <input id="dropzone-file" type="file" className="hidden" {...register("file", { required: false })} onChange={handleChange} multiple />
                             </label>
                         </div>
-                        
+
                         <select className={`w-full h-[50px] my-2 outline-none rounded-[5px] border-solid border-[2px] ${err.idProduct ? 'border-red-500' : 'border-blue-500'}`}
                             {...register("idProduct", { required: true })}
                             onChange={handleSelectChange}

@@ -1,10 +1,9 @@
-import {useEffect } from "react";
 import { useGetData } from "~/hooks/useSelectData";
 import PercentSold from "./percentSold";
 import PercentRevenue from "./percentRenevue";
 
 const Type = () => {
-    const {dataResult,err} = useGetData('sta','type');
+    const { dataResult, err } = useGetData('sta', 'type');
     return <div className="revenue-type w-full h-auto flex flex-wrap justify-center sm:justify-between lg:justify-start">
         {dataResult !== null && dataResult.map(e => <div className="r-t-detail w-[300px] h-[350px] flex flex-col m-4 bg-slate-500 rounded-lg" key={`${e.idType}-${e.nameType}`}>
             <div className="showDetail w-full h-[9%] flex justify-between text-white font-bold px-2">
@@ -61,11 +60,11 @@ const Type = () => {
                 <span className="w-[30%] h-full flex justify-start items-center">{e.percentRevenue} %</span>
             </div>
 
-            
+
 
         </div>)}
-        <PercentSold data={dataResult}/>
-        <PercentRevenue data={dataResult}/>
+        <PercentSold data={dataResult} />
+        <PercentRevenue data={dataResult} />
     </div>
 }
 export default Type;

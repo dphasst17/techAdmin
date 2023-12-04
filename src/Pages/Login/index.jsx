@@ -7,18 +7,18 @@ const Login = () => {
   const { register, handleSubmit, formState: { errors: err } } = useForm();
   const onSubmit = (data) => {
     adminLogin(data)
-    .then(res => {
-      console.log(res);
-      useSetLocalStorage({key:'isLogin',value:true})
-      useSetLocalStorage({key:'role',value:res.role})
-      useSetLocalStorage({key:'exp',value:res.exp})
-      Cookies.set('token',res.accessToken,{
-        expires: new Date(res.exp * 1000),
-        path: "/",
+      .then(res => {
+        console.log(res);
+        useSetLocalStorage({ key: 'isLogin', value: true })
+        useSetLocalStorage({ key: 'role', value: res.role })
+        useSetLocalStorage({ key: 'exp', value: res.exp })
+        Cookies.set('token', res.accessToken, {
+          expires: new Date(res.exp * 1000),
+          path: "/",
+        })
+        window.location.href = "/"
       })
-      window.location.href="/"
-    })
-    .catch(err => console.log(err))
+      .catch(err => console.log(err))
   }
   return <section className="w-screen h-screen bg-slate-700 my-0 mx-auto">
     <div className="h-full">
@@ -80,7 +80,7 @@ const Login = () => {
             <div className="md:flex md:items-center">
               <div className="md:w-1/3"></div>
               <div className="md:w-2/3">
-                <button onClick={(e) => {e.preventDefault(); handleSubmit(onSubmit)(); }} className="w-[180px] flex items-center justify-center bg-blue-600  active:bg-blue-500 text-white font-bold py-2 px-4 rounded transition-all">Login</button>
+                <button onClick={(e) => { e.preventDefault(); handleSubmit(onSubmit)(); }} className="w-[180px] flex items-center justify-center bg-blue-600  active:bg-blue-500 text-white font-bold py-2 px-4 rounded transition-all">Login</button>
               </div>
             </div>
           </div>

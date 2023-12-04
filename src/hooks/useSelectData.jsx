@@ -7,11 +7,11 @@ import * as apiPosts from "../api/posts"
 import * as apiWare from "../api/warehouse"
 import { useCallback, useContext, useEffect, useState } from "react"
 import { StateContext } from "~/context/stateContext"
-const handleCheckTypeGet = (type,fName) => {
+const handleCheckTypeGet = (type, fName) => {
     let url;
-    switch (type){
+    switch (type) {
         case 'product':
-            url =  apiProduct[fName]
+            url = apiProduct[fName]
             break;
         case 'user':
             url = apiUser[fName]
@@ -24,10 +24,10 @@ const handleCheckTypeGet = (type,fName) => {
             break;
         case 'sta':
             url = apiStatistical[fName]
-            break;   
+            break;
         case 'posts':
             url = apiPosts[fName]
-            break;  
+            break;
         case 'ware':
             url = apiWare[fName]
             break;
@@ -35,46 +35,46 @@ const handleCheckTypeGet = (type,fName) => {
     return url;
 }
 
-export const useGetData = (type,fName) => {
-    const {setIsLoading} = useContext(StateContext)
-    const [dataResult ,setDataResult] = useState(null);
-    const [err,setErr] = useState(null)
-    let url = handleCheckTypeGet(type,fName);
+export const useGetData = (type, fName) => {
+    const { setIsLoading } = useContext(StateContext)
+    const [dataResult, setDataResult] = useState(null);
+    const [err, setErr] = useState(null)
+    let url = handleCheckTypeGet(type, fName);
     useEffect(() => {
         setIsLoading(true)
         url().then(res => {
-            if(res.status === 500){
-                throw Error({status:res.status,message:res.messages})
+            if (res.status === 500) {
+                throw Error({ status: res.status, message: res.messages })
             }
             setIsLoading(false)
             setDataResult(res)
 
         })
-        .catch(err => {
-            setIsLoading(false)
-            setErr(err)
-        })
-    },[url])
-    return {dataResult,err};
+            .catch(err => {
+                setIsLoading(false)
+                setErr(err)
+            })
+    }, [url])
+    return { dataResult, err };
 }
-export const useGetDataByKey = (type,fName,key) => {
-    const {setIsLoading} = useContext(StateContext)
-    const [data ,setData] = useState(null);
-    const [err,setErr] = useState(null)
-    const url = useCallback(handleCheckTypeGet(type,fName), [type, fName]);
+export const useGetDataByKey = (type, fName, key) => {
+    const { setIsLoading } = useContext(StateContext)
+    const [data, setData] = useState(null);
+    const [err, setErr] = useState(null)
+    const url = useCallback(handleCheckTypeGet(type, fName), [type, fName]);
     useEffect(() => {
         setIsLoading(true)
         url(key).then(res => {
-            if(res.status === 500){
-                throw Error({status:res.status,message:res.messages})
+            if (res.status === 500) {
+                throw Error({ status: res.status, message: res.messages })
             }
             setIsLoading(false)
             setData(res)
         })
-        .catch(err => {
-            setIsLoading(false)
-            setErr(err)
-        })
-    },[url])
-    return {data,err};
+            .catch(err => {
+                setIsLoading(false)
+                setErr(err)
+            })
+    }, [url])
+    return { data, err };
 }

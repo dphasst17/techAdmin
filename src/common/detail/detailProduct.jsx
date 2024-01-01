@@ -4,7 +4,7 @@ import { useGetDataByKey } from "~/hooks/useSelectData";
 import closeIcon from "~/image/close.png"
 const DetailProduct = ({ props }) => {
     const { setShowDetail } = useContext(StateContext);
-    let key = { idType: props.dataDetail.idType, idProduct: props.dataDetail.idProduct }
+    let key = { idType: props.dataDetail.nameType, idProduct: props.dataDetail.idProduct }
     const { data, err } = useGetDataByKey('product', 'getProductDetail', key);
 
     const [img, setImg] = useState(null);
@@ -14,7 +14,7 @@ const DetailProduct = ({ props }) => {
     let productKey = ['nameProduct', 'price', 'imgProduct', 'des', 'dateAdded', 'view', 'idType', 'nameType', 'brand', 'idProduct', 'discount'];
     return <div className="p-detailItem lg:w-[88vw] w-full h-screen flex items-center justify-center fixed z-50 top-0 ">
         <div onClick={() => { setShowDetail(false) }} className="p-detailItem-overlay w-full h-full absolute opacity-60 bg-black z-20"></div>
-        {data !== null && data.map(e => <div key={e.idProduct}
+        {data !== null && data.map(e => <div key={`detail-${e.idProduct}`}
             className="p-detailItem-show w-full lg:w-4/5 h-full lg:h-[95%] p-2 flex flex-col lg:flex-row items-center justify-around rounded-[10px] 
             bg-slate-600 z-40 m-auto overflow-scroll lg:overflow-hidden translate-x-[-50%,50%]">
             <div className="p-detailItem-imgProduct w-full lg:w-1/5 h-[15%] lg:h-full min-h-[100px] flex flex-col items-center justify-center">
@@ -48,7 +48,7 @@ const DetailProduct = ({ props }) => {
                             ))
                     )}
                 </div>
-                <div className="btnDetail w-full h-1/5 flex justify-around">
+                <div className="btnDetail w-full h-1/5 flex justify-around my-6 xl:my-4">
                     <button onClick={() => { setShowDetail(false); props.setUpdate(true); props.setDataUpdate(key) }} className="w-2/5 h-[50px] bg-blue-800 hover:bg-blue-600 transition-all mr-4 rounded-[10px]">
                         Update
                     </button>

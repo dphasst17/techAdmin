@@ -80,7 +80,7 @@ export const uploadImageProductToSV = async (idProduct, file) => {
 export const productUpdate = async (bodyData, urlDetail) => {
   return fetch(
     `${import.meta.env.VITE_REACT_APP_URL_SERVER}/api/product/update/${
-      urlDetail.idType
+      urlDetail.nameType
     }/${urlDetail.idProduct}`,
     {
       method: "PUT",

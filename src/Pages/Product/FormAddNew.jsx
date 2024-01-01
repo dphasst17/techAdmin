@@ -3,67 +3,60 @@ import { StateContext } from "~/context/stateContext";
 import fileUpload from "~/image/fileUpload.png";
 import nextSubmit from "~/image/nextSubmit.png";
 import { useForm } from "react-hook-form";
-import * as table from "~/json/inputData";
 import closeIcon from "~/image/close.png";
 import { postProductInsert, uploadImageProductToS3 } from "~/api/product";
 export const FormAddNew = ({ props }) => {
-    const {dataType} = useContext(StateContext)
     const { register: registerProduct, handleSubmit: handleSubmitProduct, formState: { errors: err } } = useForm();
-    const { register: registerDetail, handleSubmit: handleSubmitDetail, formState: { errors: err1 } } = useForm();
-    const { stateForm, setStateForm } = useContext(StateContext);
+    const { register: registerDetail, handleSubmit: handleSubmitDetail,reset, formState: { errors: err1 } } = useForm();
+    const { dataType,stateForm, setStateForm } = useContext(StateContext);
     const [selectValue, setSelectValue] = useState();
+    const [dataDetail,setDataDetail] = useState(null)
     const [getName, setGetName] = useState(null);
     const [fileName, setFileName] = useState("");
     const [file, setFile] = useState("")
-    const typeNames = {
-        '1': 'LAPTOP',
-        '2': 'KEYBOARD',
-        '3': 'MONITOR',
-        '4': 'MEMORY',
-        '5': 'STORAGE',
-        '6': 'VGA',
-        '7': 'MOUSE'
-    };
-    useEffect(() => {
-        dataType !== null && console.log(dataType)
-    },[dataType])
-    useEffect(() => {
-        getName !== null && dataType !== null && console.log(dataType.filter(f => f.type === getName))
-    },[getName])
     const handleSelectChange = (e) => {
         setSelectValue(e.target.value)
+        reset()
     }
+    /* update file in tomorrow */
     const onSubmit = (data) => {
+       
         Object.keys(err).length === 0 && setStateForm(prevState => ({ ...prevState, product: [Object.values(data)] }));
     }
     const onSubmit2 = (data) => {
-        Object.keys(err1).length === 0 && selectValue !== ("" || undefined) && setStateForm(prevState => ({ ...prevState, detail: [Object.values(data)] }));
+        Object.keys(err1).length === 0 && selectValue !== ("" || undefined) && setStateForm(prevState => ({ ...prevState, detail: Object.fromEntries(
+            Object.entries(data).filter(([key, value]) => value !== null && value !== undefined)
+          ) }));
     }
     useEffect(() => {
-        selectValue && setGetName(typeNames[selectValue].toLowerCase());
+        selectValue && setGetName(selectValue);
     }, [selectValue])
-
+    useEffect(() => {
+        getName && dataType !== null &&  setDataDetail(dataType?.filter(f => f.type === getName)[0])
+    },[getName])
+    
     const handleChange = (event) => {
         const file = event.target.files[0];
         setFile(file)
         setFileName(file.name);
     };
     useEffect(() => {
+        console.log(stateForm)
         const FetchDataInsert = async () => {
             if (stateForm.product.length !== 0 && stateForm.detail.length !== 0) {
                 let newProduct = [...stateForm.product]
                 let newImgUrl = fileName;
                 newProduct[0][2] = newImgUrl;
-                let newStateForm = { ...stateForm, product: newProduct };
+                let newStateForm = { ...stateForm, product: newProduct[0] };
                 //Post Data Insert Product is here
-                const newFile = new FormData
+                /* const newFile = new FormData
                 newFile.append('file', file)
                 uploadImageProductToS3(newFile)
                     .then(res => console.log(res))
                     .catch(err => console.log(err))
 
-                console.log(file);
-
+                console.log(file); */
+                console.log(newStateForm)
                 postProductInsert(newStateForm)
                     .then(res => console.log(res))
                     .catch(err => console.log(err))
@@ -72,13 +65,13 @@ export const FormAddNew = ({ props }) => {
         }
         FetchDataInsert()
     }, [stateForm])
-    return <div className="formProduct w-[88vw] h-screen flex items-center justify-center fixed z-50 top-0 ">
+    return <div className="formProduct w-screen xl:w-[88vw] h-screen flex items-center justify-center fixed z-50 top-0 ">
         <div onClick={() => { props.setAddNew(false); setStateForm({ folder: 'product', product: [], detail: [] }) }} className="formProduct-overlay w-full h-full absolute opacity-60 bg-black z-20"></div>
         <div onClick={() => { props.setAddNew(false); setStateForm({ folder: 'product', product: [], detail: [] }) }} className="closeBtn absolute w-[60px] h-[50px]
-             cursor-pointer flex items-center justify-center top-5 left-2 z-50">
-            <img src={closeIcon} className="w-full h-full object-contain" alt="close-icon" />
+             cursor-pointer flex items-center justify-center top-1 lg:top-5 left-0 lg:left-2 z-50">
+            <img src={closeIcon} className="w-3/4 lg:w-full h-3/4 lg:h-full object-contain" alt="close-icon" />
         </div>
-        <div className="formDetail md:w-[800px] h-screen bg-slate-500 z-40 flex flex-col justify-around items-center pt-12 md:pt-0 pb-5">
+        <div className="formDetail w-full md:w-4/5 xl:w-[800px] h-screen bg-slate-500 z-40 flex flex-col justify-around items-center pt-12 md:pt-0 pb-5">
             <h1 className="text-[20px] text-white font-bold text-center">FORM ADD NEW PRODUCT</h1>
             <div className="formView w-full h-[90%] flex flex-col justify-between overflow-y-auto">
                 <form className="w-full h-auto">
@@ -93,9 +86,8 @@ export const FormAddNew = ({ props }) => {
                         <input className={`w-[30%] h-[50px] my-2 outline-none rounded-[5px] border-solid border-[2px] ${err.price ? 'border-red-500' : 'border-blue-500'}`}
                             type="number"{...registerProduct("price", { required: true, pattern: /^[0-9]+$/ })} placeholder="Price" />
                         <div className="flex items-center justify-center w-full">
-                            <label htmlFor="dropzone-file" className={`flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 
-                                    border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 
-                                    dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600`}>
+                            <label htmlFor="dropzone-file" className={`flex flex-col items-center justify-center w-full h-64 border-2 ${err.image ? 'border-red-500' : 'border-gray-300'}
+                                    border-dashed rounded-lg cursor-pointer bg-gray-700 `}>
                                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                     <img className="w-10 h-10" src={fileUpload} alt="img File upload" />
                                     {fileName && <span className="text-sm text-gray-500 dark:text-white my-2">{fileName}</span>}
@@ -110,13 +102,7 @@ export const FormAddNew = ({ props }) => {
                         <select className={`w-[48%] h-[50px] my-2 outline-none rounded-[5px] border-solid border-[2px] ${err.type ? 'border-red-500' : 'border-blue-500'}`}
                             {...registerProduct("type", { required: true })} onChange={handleSelectChange}>
                             <option value="">SELECT TYPE PRODUCT</option>
-                            <option value="1">LAPTOP</option>
-                            <option value="2">KEYBOARD</option>
-                            <option value="3">MONITOR</option>
-                            <option value="4">MEMORY</option>
-                            <option value="5">STORAGE</option>
-                            <option value="6">VGA</option>
-                            <option value="7">MOUSE</option>
+                            {dataType !== null && dataType.map(e => <option value={e.type}>{e.type.toUpperCase()}</option>)}
                         </select>
                         <input className={`w-full h-[50px] my-2 outline-none rounded-[5px] border-solid border-[2px] ${err.brand ? 'border-red-500' : 'border-blue-500'}`}
                             type="text" {...registerProduct("brand", { required: true })} placeholder="Brand Product" />
@@ -125,11 +111,11 @@ export const FormAddNew = ({ props }) => {
                 <form className="w-full h-auto">
                     <h1 className="text-[20px] text-white text-center font-semibold my-2">Form detail by type product</h1>
                     <div className="formDetail w-full h-full min-h-[400px] flex flex-col px-5">
-                        {getName && dataType !== null &&  dataType?.filter(f => f.type === getName)[0]?.detail.map(e => 
+                        {dataDetail !== null &&  dataDetail?.detail.map(e => 
                             <input 
-                            className={`w-full h-3/5 max-h-[50px] my-2 outline-none rounded-[5px] border-solid border-[2px] ${err1[e.name] ? 'border-red-500' : 'border-blue-500'}`} 
+                            className={`w-full h-3/5 max-h-[50px] my-2 outline-none rounded-[5px] border-solid border-[2px] ${err1[`${e.name}`] ? 'border-red-500' : 'border-blue-500'}`} 
                             type={e.datatypes} placeholder={e.displayname.toUpperCase()} key={e.name}
-                                {...registerDetail(e.name, { required: true })}
+                                {...registerDetail(`${e.name}`, { required: true })}
                             />
                         )}
                     </div>

@@ -3,24 +3,23 @@ import { StateContext } from "~/context/stateContext";
 import fileUpload from "~/image/fileUpload.png";
 import nextSubmit from "~/image/nextSubmit.png";
 import { useForm } from "react-hook-form";
-import * as table from "~/json/inputData";
 import closeIcon from "~/image/close.png";
 import { useGetDataByKey } from "~/hooks/useSelectData";
 import { productUpdate } from "~/api/product";
 export const FormUpdate = ({ props }) => {
     const { data, err: errResult } = useGetDataByKey('product', 'getProductDetail', props.dataUpdate)
-    const { stateForm, setStateForm } = useContext(StateContext);
+    const { dataType,stateForm, setStateForm } = useContext(StateContext);
     const [fileName, setFileName] = useState("");
     const { register: registerProduct, watch: watchForm1, handleSubmit: handleSubmitProduct, formState: { errors: err } } = useForm();
     const watchAllForm1 = watchForm1();
     const { register: registerDetail, watch: watchForm2, handleSubmit: handleSubmitDetail, formState: { errors: err1 } } = useForm();
     const watchAllForm2 = watchForm2();
-
+    useEffect(() => {data !== null && console.log(data)},[data])
     const onSubmit = (data) => {
         Object.keys(err).length === 0 && setStateForm(prevState => ({ ...prevState, product: Object.values(data) }));
     }
     const onSubmit2 = (data) => {
-        Object.keys(err1).length === 0 && setStateForm(prevState => ({ ...prevState, detail: Object.values(data) }));
+        Object.keys(err1).length === 0 && setStateForm(prevState => ({ ...prevState, detail: data }));
     }
     const handleSubmitData = async (e) => {
         e.preventDefault();
@@ -33,6 +32,7 @@ export const FormUpdate = ({ props }) => {
         setFileName(file.name);
     };
     useEffect(() => {
+        
         const FetchDataUpdate = async () => {
             if (stateForm.product.length !== 0 && stateForm.detail.length !== 0) {
                 let newProduct = [...stateForm.product]
@@ -40,21 +40,22 @@ export const FormUpdate = ({ props }) => {
                 newProduct[2] = newImgUrl;
                 let newStateForm = { ...stateForm, product: newProduct };
                 //Post Data Update Product is here
-                productUpdate(newStateForm, props.dataUpdate)
-                    .then(res => { res.message === "Update to success" && window.location.reload() })
+                console.log(newStateForm)
+                productUpdate(newStateForm, data !== null ? {nameType:data[0].nameType,idProduct:data[0].idProduct} : '')
+                    .then(res => { res.status === 200 && window.location.reload() })
                     .catch(err => alert(err.message))
             }
         }
         FetchDataUpdate()
     }, [stateForm])
-    return <div className="formProduct w-screen h-screen flex items-center justify-center fixed z-50 top-0 ">
+    return <div className="formProduct w-screen xl:w-[88vw] h-screen flex items-center justify-center fixed z-50 top-0 ">
         <div onClick={() => { props.setUpdate(false); setStateForm({ folder: 'product', product: [], detail: [] }) }} className="formProduct-overlay w-full h-full absolute opacity-60 bg-black z-20"></div>
         <div onClick={() => { props.setUpdate(false); setStateForm({ folder: 'product', product: [], detail: [] }) }} className="closeBtn absolute w-[60px] h-[50px]
              cursor-pointer flex items-center justify-center top-5 left-2 z-50">
             <img src={closeIcon} className="w-full h-full object-contain" alt="close-icon" />
         </div>
 
-        <div className="formDetail md:w-[800px] h-screen bg-slate-500 z-40 flex flex-col justify-around items-center pt-12 md:pt-0 pb-5">
+        <div className="formDetail w-full md:w-4/5 xl:w-[800px] h-screen md:h-[95vh] bg-slate-500 z-40 flex flex-col justify-around items-center pt-12 md:pt-0 pb-5 mx-auto">
             <h1 className="text-[20px] text-white font-bold text-center">FORM UPDATE PRODUCT</h1>
             {data && data.map(e => <div className="formView w-full h-[90%] flex flex-col justify-between overflow-y-auto">
                 <form className="w-full h-auto">
@@ -123,16 +124,12 @@ export const FormUpdate = ({ props }) => {
                 <form className="w-full h-auto">
                     <h1 className="text-[20px] text-white text-center font-semibold my-2">Form detail by type product</h1>
                     <div className="formDetail w-full h-full min-h-[400px] flex flex-col px-5">
-                        {table[e.nameType].map(d =>
+                        {dataType?.filter(f => f.type === e.nameType)[0]?.detail.map(d =>
                             <input className={`w-full h-3/5 max-h-[50px] my-2 outline-none rounded-[5px] 
                                 border-solid border-[2px] ${err1[d.name] ? 'border-red-500' : 'border-blue-500'}`}
-                                type="text" placeholder={d.placeholder} key={d.name} defaultValue={e.detail.map(c => c[d.keyword])}
+                                type={d.datatypes} placeholder={d.displayname} key={d.name} defaultValue={e.detail.map(c => c[d.name])}
                                 {...registerDetail(d.name, {
                                     required: true,
-                                    pattern: {
-                                        value: d.type === "text" ? /^[A-Za-z0-9+-.@ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰýÝỲỶỸửữựýýỳỷỹ' ']+$/ : /^[0-9.,]+$/,
-                                        message: d.type === "text" ? "Does not contain special characters" : "Only number are allowed"
-                                    }
                                 })}
                             />
                         )}

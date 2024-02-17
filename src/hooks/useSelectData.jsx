@@ -5,6 +5,7 @@ import * as apiComment from "../api/comment"
 import * as apiStatistical from "../api/statistical"
 import * as apiPosts from "../api/posts"
 import * as apiWare from "../api/warehouse"
+import * as apiOrder from "../api/order"
 import { useCallback, useContext, useEffect, useState } from "react"
 import { StateContext } from "~/context/stateContext"
 const handleCheckTypeGet = (type, fName) => {
@@ -39,22 +40,33 @@ export const useGetData = (type, fName) => {
     const { setIsLoading } = useContext(StateContext)
     const [dataResult, setDataResult] = useState(null);
     const [err, setErr] = useState(null)
-    let url = handleCheckTypeGet(type, fName);
+
     useEffect(() => {
+        const url = handleCheckTypeGet(type, fName);
+        let isCancelled = false;
+
         setIsLoading(true)
         url().then(res => {
-            if (res.status === 500) {
-                throw Error({ status: res.status, message: res.messages })
-            }
-            setIsLoading(false)
-            setDataResult(res)
-
-        })
-            .catch(err => {
+            if (!isCancelled) {
+                if (res.status === 500) {
+                    throw Error(res.messages)
+                }
                 setIsLoading(false)
-                setErr(err)
-            })
-    }, [url])
+                setDataResult(res)
+            }
+        })
+        .catch(err => {
+            if (!isCancelled) {
+                setIsLoading(false)
+                setErr(err.toString())
+            }
+        })
+
+        return () => {
+            isCancelled = true;
+        }
+    }, [type, fName]) // Thay đổi phụ thuộc từ [url] thành [type, fName]
+
     return { dataResult, err };
 }
 export const useGetDataByKey = (type, fName, key) => {

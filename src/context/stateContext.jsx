@@ -11,7 +11,10 @@ export const StateProvider = ({ children }) => {
     const [dataUser, setDataUser] = useState(null);
     const [userDetail, setUserDetail] = useState(null);
     const [dataAddress,setDataAddress] = useState(null);
-    const [dataType,setDataType] = useState(null)
+    const [dataType,setDataType] = useState(null);
+    const [dataSale,setDataSale] = useState(null);
+    const [orderSuccess,setOrderSuccess] = useState(null);
+    const [orderFail,setOrderFail] = useState(null);
     const [errProduct, setErrProduct] = useState(null);
     const [errComment, setErrComment] = useState(null);
     const [errOrder, setErrOrder] = useState(null);
@@ -21,7 +24,9 @@ export const StateProvider = ({ children }) => {
     const [errUDetail, setErrUDetail] = useState(null);
     const [errPost,setErrPost]= useState(null);
     const [errAddress,setErrAddress] = useState(null);
-
+    const [errSale,setErrSale] = useState(null);
+    const [errOrderSuccess,setErrOrderSuccess] = useState(null);
+    const [errOrderFail,setErrOrderFail] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [disabledScroll, setDisabledScroll] = useState();
     // Update or Add new product
@@ -53,7 +58,9 @@ export const StateProvider = ({ children }) => {
                 userDetail, setUserDetail,
                 dataAddress,setDataAddress,
                 dataType,setDataType,
-                
+                dataSale,setDataSale,
+                orderSuccess,setOrderSuccess,
+                orderFail,setOrderFail,
                 errProduct, setErrProduct,
                 errComment, setErrComment,
                 errOrder, setErrOrder,
@@ -63,7 +70,9 @@ export const StateProvider = ({ children }) => {
                 errUDetail, setErrUDetail,
                 errPost,setErrPost,
                 errAddress,setErrAddress,
-
+                errSale,setErrSale,
+                errOrderSuccess,setErrOrderSuccess,
+                errOrderFail,setErrOrderFail,
                 isLoading, setIsLoading,
                 disabledScroll, setDisabledScroll,
                 showDetail, setShowDetail,

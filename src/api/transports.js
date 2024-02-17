@@ -30,6 +30,22 @@ export const transUpdateStatus = async (idTrans, status) => {
     return res.json();
   });
 };
+export const transUpdateShipper = async (idTrans, idShipper) => {
+  return fetch(
+    `${
+      import.meta.env.VITE_REACT_APP_URL_SERVER
+    }/api/transports/update/shipper/${idTrans}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ shipper: idShipper }),
+    }
+  ).then((res) => {
+    return res.json();
+  });
+};
 export const transDeleteAll = async (idTrans) => {
   return fetch(
     `${
@@ -45,3 +61,35 @@ export const transDeleteAll = async (idTrans) => {
     return res.json();
   });
 };
+export const successTrans = async(idTrans) => {
+  return fetch(
+    `${
+      import.meta.env.VITE_REACT_APP_URL_SERVER
+    }/api/transports/success`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body:JSON.stringify({id:idTrans})
+    }
+  ).then((res) => {
+    return res.json();
+  });
+}
+export const failTrans = async(idTrans) => {
+  return fetch(
+    `${
+      import.meta.env.VITE_REACT_APP_URL_SERVER
+    }/api/transports/fail`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body:JSON.stringify({id:idTrans})
+    }
+  ).then((res) => {
+    return res.json();
+  });
+}

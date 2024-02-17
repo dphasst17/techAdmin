@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { insertNewType } from "~/api/product";
 import closeIcon from "~/image/close.png";
@@ -17,8 +17,8 @@ const AddType = ({ props }) => {
             order:data[`order-${value}`],
             displayname:data[`displayname${value}`]
         }));
-        console.log(data)
-        console.log({tbName:data.tbName,arrCol:arrayObj});
+/*         console.log(data)
+        console.log({tbName:data.tbName,arrCol:arrayObj}); */
         insertNewType({tbName:data.tbName,arrCol:arrayObj})
         .then(res => {
             if(res.status === 201){

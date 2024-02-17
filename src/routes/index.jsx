@@ -2,7 +2,7 @@ import Home from "../pages/Home";
 import Product from "../pages/Product";
 import User from "../pages/User";
 import Comment from "../pages/Comment";
-import Order from "../pages/Order";
+import Management from "../pages/Management";
 import Statistical  from "../pages/Statistical";
 import Login from "../pages/Login";
 import Posts from "~/pages/Posts";
@@ -18,7 +18,7 @@ const privateRoutes = [
   { path: "/user", component: User },
   { path: "/comment", component: Comment },
   { path: "/statistical", component: Statistical },
-  { path: "/order", component: Order },
+  { path: "/Management", component: Management },
   { path: "/posts", component: Posts },
   { path:"/ware", component: Warehouse }
 ];

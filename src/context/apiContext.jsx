@@ -4,13 +4,16 @@ import { StateContext } from "./stateContext";
 import HandleExpToken from "~/helper/handleExpToken";
 import { useGetLocalStorage } from "~/hooks/useLocalStorage";
 import { getUserOne } from "~/api/user";
+import { getAllOrderFail, getAllOrderSuccess } from "~/api/order";
 
 export const ApiContext = createContext({});
 export const ApiProvider = ({ children }) => {
     const { 
         setDataProduct, setDataComment, setDataOrder, setDataUser, setUserDetail,setDataDiary,setDataTotal,setDataPost,setDataAddress,
-        setErrProduct, setErrComment, setErrOrder, setErrUser,setErrDiary,setErrTotal,setErrPost,setErrAddress,setDataType
+        setErrProduct, setErrComment, setErrOrder, setErrUser,setErrDiary,setErrTotal,setErrPost,setErrAddress,setDataType,setDataSale,setErrSale,
+        setOrderSuccess,setOrderFail,setErrOrderSuccess,setErrOrderFail
     } = useContext(StateContext)
+    const { dataResult: sale, err: errSale } = useGetData('product', 'getSaleEvent');
     const { dataResult: product, err: errProduct } = useGetData('product', 'getProduct');
     const { dataResult: type, err: errType } = useGetData('product', 'getInfoType');
     const { dataResult: comment, err: errComment } = useGetData('comment', 'commentGetAll');
@@ -20,11 +23,25 @@ export const ApiProvider = ({ children }) => {
     const { dataResult:diary, err:errDiary } = useGetData('ware', 'getAllWare');
     const { dataResult:total, err:errTotal } = useGetData('ware', 'getTotalProduct');
     const { dataResult:post, err:errPost } = useGetData('posts', 'getPosts');
-
     const isLogin = useGetLocalStorage('isLogin')
     const exp = useGetLocalStorage('exp');
     const handleExpToken = HandleExpToken()
-
+    useEffect(() => {
+        getAllOrderSuccess().then(
+            res => {
+                if(res.status === 200){
+                    setOrderSuccess(res.data)
+                }
+            }
+        )
+        getAllOrderFail().then(
+            res => {
+                if(res.status === 200){
+                    setOrderFail(res.data)
+                }
+            }
+        )
+    },[])
     useEffect(() => {
         product !== null && setDataProduct(product);
         comment !== null && setDataComment(comment.lastResult);
@@ -35,6 +52,7 @@ export const ApiProvider = ({ children }) => {
         total !== null && setDataTotal(total);
         post !== null && setDataPost(post)
         type !== null && setDataType(type.data)
+        sale !== null && setDataSale(sale.data)
     }, [
         product, setDataProduct,
         comment, setDataComment,
@@ -43,7 +61,8 @@ export const ApiProvider = ({ children }) => {
         address,setDataAddress,
         diary,setDataDiary,
         total,setDataTotal,
-        post,setDataPost
+        post,setDataPost,
+        sale,setDataSale,
     ])
 
     useEffect(() => {
@@ -54,7 +73,8 @@ export const ApiProvider = ({ children }) => {
         errAddress !== null && setErrAddress(errAddress);
         errDiary !== null && setErrDiary(errDiary);
         errTotal !== null && setErrTotal(errTotal);
-        errPost !== null && setErrPost(errPost)
+        errPost !== null && setErrPost(errPost);
+        errSale !== null && setErrSale(errSale)
     },[
         errProduct, setErrProduct,
         errComment, setErrComment,
@@ -63,7 +83,8 @@ export const ApiProvider = ({ children }) => {
         errAddress, setErrAddress,
         errDiary,setErrDiary,
         errTotal,setErrTotal,
-        errPost,setErrPost
+        errPost,setErrPost,
+        errSale,setErrSale
     ])
     useEffect(() => {
         const fetchData = async () => {

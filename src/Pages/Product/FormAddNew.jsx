@@ -49,13 +49,13 @@ export const FormAddNew = ({ props }) => {
                 newProduct[0][2] = newImgUrl;
                 let newStateForm = { ...stateForm, product: newProduct[0] };
                 //Post Data Insert Product is here
-                /* const newFile = new FormData
+                const newFile = new FormData
                 newFile.append('file', file)
                 uploadImageProductToS3(newFile)
                     .then(res => console.log(res))
                     .catch(err => console.log(err))
 
-                console.log(file); */
+                console.log(file);
                 console.log(newStateForm)
                 postProductInsert(newStateForm)
                     .then(res => console.log(res))
